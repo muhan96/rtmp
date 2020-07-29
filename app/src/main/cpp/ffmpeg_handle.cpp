@@ -17,7 +17,6 @@ extern "C" {
 #include "libavformat/avformat.h"
 //引入时间
 #include "libavutil/time.h"
-#include "libavutil/imgutils.h"
 }
 
 #include <iostream>
@@ -57,7 +56,7 @@ int avError(int errNum) {
  */
 extern "C"
 JNIEXPORT jint JNICALL
-Java_com_wangheart_rtmpfile_ffmpeg_FFmpegHandle_setCallback(JNIEnv *env, jobject instance,
+Java_com_starnet_ftc_rtmp_ffmpeg_FFmpegHandle_setCallback(JNIEnv *env, jobject instance,
                                                             jobject pushCallback1) {
     //转换为全局变量
     pushCallback = env->NewGlobalRef(pushCallback1);
@@ -79,7 +78,7 @@ Java_com_wangheart_rtmpfile_ffmpeg_FFmpegHandle_setCallback(JNIEnv *env, jobject
 //获取FFmpeg相关信息
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_wangheart_rtmpfile_ffmpeg_FFmpegHandle_getAvcodecConfiguration(JNIEnv *env,
+Java_com_starnet_ftc_rtmp_ffmpeg_FFmpegHandle_getAvcodecConfiguration(JNIEnv *env,
                                                                         jobject instance) {
     char info[10000] = {0};
     sprintf(info, "%s\n", avcodec_configuration());
@@ -88,7 +87,7 @@ Java_com_wangheart_rtmpfile_ffmpeg_FFmpegHandle_getAvcodecConfiguration(JNIEnv *
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_com_wangheart_rtmpfile_ffmpeg_FFmpegHandle_pushRtmpFile(JNIEnv *env, jobject instance,
+Java_com_starnet_ftc_rtmp_ffmpeg_FFmpegHandle_pushRtmpFile(JNIEnv *env, jobject instance,
                                                              jstring path_) {
     const char *path = env->GetStringUTFChars(path_, 0);
     logw(path);
@@ -161,7 +160,7 @@ Java_com_wangheart_rtmpfile_ffmpeg_FFmpegHandle_pushRtmpFile(JNIEnv *env, jobjec
                 ret = AVERROR_UNKNOWN;
             }
             if (octx->oformat->flags & AVFMT_GLOBALHEADER) {
-                out_stream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
+                out_stream->codec->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
             }
             ret = avcodec_parameters_copy(out_stream->codecpar, in_stream->codecpar);
             if (ret < 0) {

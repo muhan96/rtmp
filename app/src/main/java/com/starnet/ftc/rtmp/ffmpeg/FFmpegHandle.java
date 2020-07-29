@@ -14,7 +14,7 @@ public class FFmpegHandle {
         mInstance = new FFmpegHandle();
     }
 
-    public static FFmpegHandle getmInstance() {
+    public static FFmpegHandle getInstance() {
         if(mInstance == null) {
             throw new RuntimeException("FFmpegeHandle must init first");
         }
@@ -35,8 +35,7 @@ public class FFmpegHandle {
 
     public native int setCallback(PushCallback pushCallback);
 
-    public native String getAvcodecCOnfiguration();
+    public native String getAvcodecConfiguration();
 
-    public native  int pushRtmpFile(String path);
-
+    public native int pushRtmpFile(String path);
 }
